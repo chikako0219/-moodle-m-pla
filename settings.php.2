@@ -29,8 +29,7 @@ if ($ADMIN->fulltree) {
     $settings->add(new admin_setting_configcheckbox('sharedpanel/requiremodintro',
         get_string('requiremodintro', 'sharedpanel'), get_string('configrequiremodintro', 'sharedpanel'), 1));
 
-    require 'setting/setting_facebook.php';
-    require 'setting/setting_twitter.php';
+    require('setting/setting_facebook.php');
     
     //$settings->add(new admin_setting_heading('sharedpanel/facebook',
     //    get_string('facebook', 'sharedpanel'), get_string('facebook', 'sharedpanel')));
@@ -42,21 +41,21 @@ if ($ADMIN->fulltree) {
     //    get_string('FBsecret', 'sharedpanel'),
     //    get_string('FBsecret_help', 'sharedpanel'), ''));
 
-    //$settings->add(new admin_setting_heading('sharedpanel/twitter',
-    //    get_string('twitter', 'sharedpanel'), get_string('twitter', 'sharedpanel')));
-    //$settings->add(new admin_setting_configtext('sharedpanel/TWconsumerKey',
-    //    get_string('TWconsumerKey', 'sharedpanel'),
-    //    get_string('TWconsumerKey_help', 'sharedpanel'), ''));
+    $settings->add(new admin_setting_heading('sharedpanel/twitter',
+        get_string('twitter', 'sharedpanel'), get_string('twitter', 'sharedpanel')));
+    $settings->add(new admin_setting_configtext('sharedpanel/TWconsumerKey',
+        get_string('TWconsumerKey', 'sharedpanel'),
+        get_string('TWconsumerKey_help', 'sharedpanel'), ''));
 
-    //$settings->add(new admin_setting_configtext('sharedpanel/TWconsumerSecret',
-    //    get_string('TWconsumerSecret', 'sharedpanel'),
-    //    get_string('TWconsumerSecret_help', 'sharedpanel'), ''));
+    $settings->add(new admin_setting_configtext('sharedpanel/TWconsumerSecret',
+        get_string('TWconsumerSecret', 'sharedpanel'),
+        get_string('TWconsumerSecret_help', 'sharedpanel'), ''));
 
-    //$settings->add(new admin_setting_configtext('sharedpanel/TWaccessToken',
-    //    get_string('TWaccessToken', 'sharedpanel'),
-    //    get_string('TWaccessToken_help', 'sharedpanel'), ''));
+    $settings->add(new admin_setting_configtext('sharedpanel/TWaccessToken',
+        get_string('TWaccessToken', 'sharedpanel'),
+        get_string('TWaccessToken_help', 'sharedpanel'), ''));
 
-    //$settings->add(new admin_setting_configtext('sharedpanel/TWaccessTokenSecret',
-    //    get_string('TWaccessTokenSecret', 'sharedpanel'),
-    //    get_string('TWaccessTokenSecret_help', 'sharedpanel'), ''));
+    $settings->add(new admin_setting_configtext('sharedpanel/TWaccessTokenSecret',
+        get_string('TWaccessTokenSecret', 'sharedpanel'),
+        get_string('TWaccessTokenSecret_help', 'sharedpanel'), ''));
 }

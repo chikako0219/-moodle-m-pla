@@ -20,7 +20,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-
 namespace mod_sharedpanel;
 
 use core\notification;
@@ -30,7 +29,6 @@ require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once(dirname(__FILE__) . '/lib.php');
 require_once(dirname(__FILE__) . '/locallib.php');
 
-global $sharedpanel;
 global $DB, $PAGE, $OUTPUT;
 
 $id = optional_param('id', 0, PARAM_INT);
@@ -58,10 +56,6 @@ echo $OUTPUT->header();
 
 $cardidstwitter = $cardidsemails = $cardidsevernote = $cardidsfacebook = null;
 
-//require('twitter_importcard.php');
-require('import/twitter_importcard2.php');
-
-/*
 // Twitter.
 $twitterobj = new twitter($sharedpanel);
 if ($twitterobj->is_enabled()) {
@@ -83,7 +77,6 @@ if ($twitterobj->is_enabled()) {
 } else {
     echo html_writer::message(notification::INFO, get_string('import_no_authinfo', 'mod_sharedpanel', 'Twitter'));
 }
-*/
 
 // Email.
 $emailobj = new email($sharedpanel);

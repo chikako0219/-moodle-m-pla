@@ -137,19 +137,9 @@ if ($sortby) {
 echo html_writer::start_div('', ['id' => '', 'class' => 'container']);
 echo html_writer::start_div('', ['id' => 'diagramContainer', 'class' => 'row']);
 
-/*
-if ($_POST[$modinstance->radio]==0){
-require('displaystyle/viewstyle1.php');
-}
-else if ($_POST[$modinstance->radio]==1){
-require('displaystyle/viewstyle2.php');
-}
-*/
-
 foreach ($cards as $card) {
     echo \mod_sharedpanel\html_writer::card($sharedpanel, $context, $card);
 }
-
 echo html_writer::end_div();
 echo html_writer::end_div();
 

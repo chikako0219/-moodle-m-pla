@@ -66,7 +66,7 @@ class html_writer extends \html_writer
                 $class = "-facebook";
                 break;
             case "twitter" :
-                $class = "-twitter";
+                $class = "-ttwitter";
                 break;
             case "moodle" :
                 $class = "-moodle";

@@ -70,6 +70,16 @@ class mod_sharedpanel_mod_form extends moodleform_mod
             $this->add_intro_editor();
         }
 
+        // Display Style.
+        $mform->addElement('header', 'displaystyleform', 'Display Style');
+        $mform->setExpanded('displaystyleform');
+        $radioarray=array();
+        $radioarray[] = $mform->createElement('radio', 'display', '', get_string('style1'), 0, $attributes);
+        $radioarray[] = $mform->createElement('radio', 'display', '', get_string('style2'), 1, $attributes);
+        $radioarray[] = $mform->createElement('radio', 'display', '', get_string('style2'), 2, $attributes);
+        $mform->addGroup($radioarray, 'radioar', '', array(' '), false);
+ 
+
         // Twitter.
         $mform->addElement('header', 'sharedpanelfieldset_twitter', 'Twitter');
         $mform->setExpanded('sharedpanelfieldset_twitter');
