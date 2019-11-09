@@ -73,113 +73,28 @@ class mod_sharedpanel_mod_form extends moodleform_mod
         // Display Style.
         $mform->addElement('header', 'displaystyleform', 'Display Style');
         $mform->setExpanded('displaystyleform');
+
         $radioarray=array();
-        $radioarray[] = $mform->createElement('radio', 'display', '', get_string('style1'), 0, $attributes);
-        $radioarray[] = $mform->createElement('radio', 'display', '', get_string('style2'), 1, $attributes);
-        $radioarray[] = $mform->createElement('radio', 'display', '', get_string('style2'), 2, $attributes);
-        $mform->addGroup($radioarray, 'radioar', '', array(' '), false);
- 
+        $radioarray[] = $mform->createElement('radio', 'display_style', '', 'style1', 0, '');
+        $radioarray[] = $mform->createElement('radio', 'display_style', '', 'style2', 1, '');
+        $radioarray[] = $mform->createElement('radio', 'display_style', '', 'style3', 2, '');
+        $mform->addGroup($radioarray, 'display_style', '', array(' '), false);
+	$mform->setType('display_style', PARAM_INT); 
 
-        // Twitter.
-        $mform->addElement('header', 'sharedpanelfieldset_twitter', 'Twitter');
-        $mform->setExpanded('sharedpanelfieldset_twitter');
-        $mform->addElement('text', 'hashtag1', get_string('form_import_tweet_hashtag', 'mod_sharedpanel'));
-        $mform->setType('hashtag1', PARAM_TEXT);
+        // require mod_forms from diretory "mod_form".
+		require 'mod_form/modform_twitter.php';
+		require 'mod_form/modform_email.php';
+		require 'mod_form/modform_facebook.php';
+		require 'mod_form/modform_evernote.php';
+		require 'mod_form/modform_line.php';
 
-        // Email.
-        $mform->addElement('header', 'sharedpanelfieldset_email', 'Email');
-        $mform->setExpanded('sharedpanelfieldset_email');
-
-        $mform->addElement('text', 'emailadr1', get_string('form_emailadr1', 'mod_sharedpanel'));
-        $mform->setType('emailadr1', PARAM_TEXT);
-        $mform->addElement('text', 'emailkey1', get_string('form_emailkey1', 'mod_sharedpanel'));
-        $mform->setType('emailkey1', PARAM_TEXT);
-        $mform->addElement('text', 'emailhost', get_string('form_emailhost', 'mod_sharedpanel'));
-        $mform->setType('emailhost', PARAM_TEXT);
-        $mform->addElement('text', 'emailport', get_string('form_emailport', 'mod_sharedpanel'));
-        $mform->setType('emailport', PARAM_INT);
-        $mform->addElement('advcheckbox', 'emailisssl', get_string('form_emailisssl', 'mod_sharedpanel'));
-        $mform->addElement('passwordunmask', 'emailpas1', get_string('password', 'core'));
-        $mform->setType('emailpas1', PARAM_TEXT);
-
-        // Facebook.
-        $fb = new \Facebook\Facebook([
-            'app_id' => $config->FBappID,
-            'app_secret' => $config->FBsecret
-        ]);
-
-        $mform->addElement('header', 'sharedpanelfieldset_facebook', 'Facebook');
-        $mform->setExpanded('sharedpanelfieldset_facebook');
-
-        $mform->addElement('text', 'fbgroup1', get_string('form_fbgroup1', 'mod_sharedpanel'));
-        $mform->setType('fbgroup1', PARAM_TEXT);
-
-        $mform->addElement('html', '<h5>Facebook User Access Token</h5>');
-
-        if ($instance) {
-            $mform->addElement('html',
-                '<div class="well">' . get_string('facebook_get_user_access_token_msg', 'mod_sharedpanel') . '</div>');
-
-            if ($instance->fbuseraccesstoken) {
-                $mform->addElement('html',
-                    '<div class="well">' . get_string('facebook_get_user_access_token_ok', 'mod_sharedpanel') . '</div>');
-            } else {
-                $mform->addElement('html',
-                    '<div class="well">' . get_string('facebook_get_user_access_token_notyet', 'mod_sharedpanel') . '</div>');
-            }
-            $callback = new moodle_url($CFG->wwwroot . '/mod/sharedpanel/facebook_login.php');
-            $helper = $fb->getRedirectLoginHelper();
-            $url = new moodle_url($helper->getLoginUrl($callback->out(true), ['user_managed_groups']));
-            $action = new \popup_action("click", $url, ["width" => "600px"]);
-            $mform->addElement('html',
-                $OUTPUT->action_link($url->out(),
-                    get_string('facebook_get_user_access_token', 'mod_sharedpanel'),
-                    $action,
-                    ["class" => "btn btn-success"])
-            );
-        } else {
-            $mform->addElement('html',
-                '<div class="well">' . get_string('facebook_get_user_access_token_msg_reload', 'mod_sharedpanel') . '</div>');
-        }
-
-        // Evernote.
-        $mform->addElement('header', 'sharedpanelfieldset_evernote', 'Evernote');
-        $mform->setExpanded('sharedpanelfieldset_evernote');
-
-        $mform->addElement('text', 'emailadr2', get_string('form_emailadr2', 'mod_sharedpanel'));
-        $mform->setType('emailadr2', PARAM_TEXT);
-        $mform->addElement('passwordunmask', 'emailpas2', get_string('form_emailpas2', 'mod_sharedpanel'));
-        $mform->setType('emailpas2', PARAM_RAW);
-        $mform->addElement('text', 'emailkey2', get_string('form_emailkey2', 'mod_sharedpanel'));
-        $mform->setType('emailkey2', PARAM_TEXT);
-
-        // LINE.
-        $mform->addElement('header', 'sharedpanelfieldset_line', 'LINE');
-        $mform->setExpanded('sharedpanelfieldset_line');
-
-        $mform->addElement('text', 'line_channel_id', 'Channel ID');
-        $mform->setType('line_channel_id', PARAM_TEXT);
-        $mform->addElement('text', 'line_channel_secret', 'Channel secret key');
-        $mform->setType('line_channel_secret', PARAM_TEXT);
-        $mform->addElement('text', 'line_channel_access_token', 'Channel access token');
-        $mform->setType('line_channel_access_token', PARAM_TEXT);
-
-        if ($instanceid) {
-            $_SESSION['sharedpanel_instanceid'] = $instanceid;
-            $mform->addElement('html', '<h5>Webhook URL</h5>');
-            if ((array_key_exists('HTTPS', $_SERVER) && $_SERVER['HTTPS'] === 'on')) {
-                $mform->addElement('html',
-                    '<div class="well">' . $CFG->wwwroot . '/mod/sharedpanel/line_webhook.php?id=' . $instanceid . '</div>');
-            } else {
-                $mform->addElement('html',
-                    '<div class="well">' . get_string('form_line_warning_https', 'mod_sharedpanel') . '</div>');
-            }
-        }
+     	// Forms for new external services
+		require 'mod_form/modform_pinterest.php';
 
         // Add standard elements, common to all modules.
         $this->standard_coursemodule_elements();
 
         // Add standard buttons, common to all modules.
         $this->add_action_buttons();
-    }
+	}
 }

@@ -25,7 +25,8 @@ require_once(__DIR__ . "/../lib/Facebook/autoload.php");
 
 class facebook extends card
 {
-    public function is_enabled() {
+    public function is_enabled()
+    {
         $config = get_config('sharedpanel');
         if (empty($config->FBappID) ||
             empty($config->FBsecret)
@@ -35,7 +36,8 @@ class facebook extends card
         return true;
     }
 
-    public function import() {
+    public function import()
+    {
         global $CFG, $DB, $OUTPUT;
         $cm = get_coursemodule_from_instance('sharedpanel', $this->moduleinstance->id);
         $context = \context_module::instance($cm->id);
@@ -141,7 +143,8 @@ class facebook extends card
         return $cardids;
     }
 
-    public function get_error() {
+    public function get_error()
+    {
         return $this->error;
     }
 }

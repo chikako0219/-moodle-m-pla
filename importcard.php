@@ -58,8 +58,9 @@ echo $OUTPUT->header();
 
 $cardidstwitter = $cardidsemails = $cardidsevernote = $cardidsfacebook = null;
 
-//require('twitter_importcard.php');
 require('import/twitter_importcard2.php');
+require('import/email_importcard.php');
+require('import/pinterest_importcard.php');
 
 /*
 // Twitter.
@@ -83,7 +84,7 @@ if ($twitterobj->is_enabled()) {
 } else {
     echo html_writer::message(notification::INFO, get_string('import_no_authinfo', 'mod_sharedpanel', 'Twitter'));
 }
-*/
+
 
 // Email.
 $emailobj = new email($sharedpanel);
@@ -108,6 +109,8 @@ if ($emailobj->is_enabled()) {
 } else {
     echo html_writer::message(notification::INFO, get_string('import_no_authinfo', 'mod_sharedpanel', 'mail'));
 }
+*/
+
 
 // Evernote.
 $evernoteobj = new evernote($sharedpanel);

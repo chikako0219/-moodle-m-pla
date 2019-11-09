@@ -33,6 +33,9 @@
                 <FIELD NAME="line_channel_id" TYPE="char" LENGTH="255" SEQUENCE="false" NOTNULL="false"/>
                 <FIELD NAME="line_channel_secret" TYPE="char" LENGTH="255" SEQUENCE="false" NOTNULL="false"/>
                 <FIELD NAME="line_channel_access_token" TYPE="char" LENGTH="255" SEQUENCE="false" NOTNULL="false"/>
+                <FIELD NAME="display_style" TYPE="int" LENGTH="3" SEQUENCE="false" NOTNULL="false"/>
+                <FIELD NAME="newservice_config1" TYPE="char" LENGTH="255" SEQUENCE="false" NOTNULL="false"/>
+                <FIELD NAME="newservice_config2" TYPE="char" LENGTH="255" SEQUENCE="false" NOTNULL="false"/>
             </FIELDS>
             <KEYS>
                 <KEY NAME="primary" TYPE="primary" FIELDS="id"/>

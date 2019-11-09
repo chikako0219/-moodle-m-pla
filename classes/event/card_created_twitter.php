@@ -15,28 +15,39 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * This file replaces the legacy STATEMENTS section in db/install.xml,
- * lib.php/modulename_install() post installation hook and partially defaults.php
+ * Defines the view event.
  *
  * @package    mod_sharedpanel
- * @copyright  2016 NAGAOKA Chikako, KITA Toshihiro
+ * @copyright  2014 Daniel Neis Araujo
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace mod_sharedpanel\event;
+use core\event\base;
+
 defined('MOODLE_INTERNAL') || die();
 
-/**
- * Post installation procedure
- *
- * @see upgrade_plugins_modules()
- */
-function xmldb_sharedpanel_install() {
-}
+class card_created_twitter extends base {
 
-/**
- * Post installation recovery procedure
- *
- * @see upgrade_plugins_modules()
- */
-function xmldb_sharedpanel_install_recovery() {
+    protected function init() {
+        $this->data['objecttable'] = 'sharedpanel';
+        $this->data['crud'] = 'c';
+        $this->data['edulevel'] = self::LEVEL_PARTICIPATING;
+    }
+
+    /**
+     * @return string
+     * @throws \coding_exception
+     */
+    public static function get_name() {
+        return get_string('event_create_twitter', 'mod_sharedpanel');
+    }
+
+    public function get_description() {
+        return "The user with id $this->userid created card with Twitter $this->objectid .";
+    }
+
+    protected function validate_data() {
+        parent::validate_data();
+    }
 }

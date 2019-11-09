@@ -89,7 +89,7 @@ class html_writer extends \html_writer
         $tags = card::get_tags($card->id);
         $html .= self::start_div('card-header card-header' . $class);
 
-        if (has_capability('moodle/course:manageactivities', $context)) {
+         if(has_capability('moodle/course:manageactivities', $context)) {
             $dellink = new \moodle_url('deletecard.php', ['id' => $context->instanceid, 'c' => $card->id, 'sesskey' => sesskey()]);
             $icon = $OUTPUT->action_icon($dellink, new \pix_icon('t/delete', ''));
 
@@ -103,9 +103,12 @@ class html_writer extends \html_writer
 
         $html .= self::start_div('card-body card-body' . $class);
         $html .= self::span($card->content);
+	$html .= self::span($card->attachment_filename);
+	//$html .= self::span('<br>' . $card->messageid);
         $html .= self::span(
             '<br/><br/>' . userdate($card->timeposted) . "<br/>" . $card->sender . "<br/> from " . $card->inputsrc);
 
+/*
         // If attachment exists.
         if (!is_null($card->attachment_filename) && !empty($card->attachment_filename)) {
             $fs = get_file_storage();
@@ -147,6 +150,7 @@ class html_writer extends \html_writer
             }
         }
 
+*/
         $html .= self::end_div();
 
         $html .= self::start_div('card-footer card-footer' . $class);
@@ -191,4 +195,5 @@ class html_writer extends \html_writer
 
         return $html;
     }
+
 }

@@ -40,7 +40,8 @@ class card
      * card constructor.
      * @param $modinstance
      */
-    public function __construct($modinstance) {
+    public function __construct($modinstance)
+    {
         $this->moduleinstance = $modinstance;
         $this->error = new \stdClass();
         $this->error->code = 0;
@@ -54,7 +55,8 @@ class card
      * @return mixed
      * @throws \dml_exception
      */
-    public function get($cardid) {
+    public function get($cardid)
+    {
         global $DB;
         return $DB->get_record('sharedpanel_cards', ['id' => $cardid]);
     }
@@ -66,7 +68,8 @@ class card
      * @return array
      * @throws \dml_exception
      */
-    public function gets($order = 'like') {
+    public function gets($order = 'like')
+    {
         global $DB, $USER;
 
         $sql = "
@@ -88,7 +91,8 @@ FROM {sharedpanel_cards} c WHERE c.hidden = 0 AND c.sharedpanelid = :moduleinsta
         return $DB->get_records_sql($sql, ['userid' => $USER->id, 'ltype' => $ltype, 'moduleinstanceid' => $this->moduleinstance->id]);
     }
 
-    public function get_last_card($inputsrc) {
+    public function get_last_card($inputsrc)
+    {
         global $DB;
         $cards = $DB->get_records('sharedpanel_cards',
             ['sharedpanelid' => $this->moduleinstance->id, 'inputsrc' => $inputsrc],
@@ -98,17 +102,25 @@ FROM {sharedpanel_cards} c WHERE c.hidden = 0 AND c.sharedpanelid = :moduleinsta
         return $cards ? current($cards) : false;
     }
 
-    public static function get_tags($cardid) {
+    public static function get_tags($cardid)
+    {
         global $DB;
         return $DB->get_records('sharedpanel_card_tags', ['cardid' => $cardid]);
     }
 
-    public function add($content, $sender, $inputsrc = 'moodle', $messageid = "", $timeupdated = "") {
-        global $DB, $USER;
+    public function add($content, $sender, $attachment = '', $inputsrc = 'moodle', $messageid = "", $timeupdated = "", $userid = "")
+    {
+        global $DB, $USER, $PAGE;
+
+        if (empty($user)) {
+            $userid = $USER->id;
+        }
+
+        $instance = $DB->get_record('sharedpanel', ['id' => $this->moduleinstance->id], '*', MUST_EXIST);
 
         $data = new \stdClass;
         $data->sharedpanelid = $this->moduleinstance->id;
-        $data->userid = $USER->id;
+        $data->userid = $userid;
         if (empty($timeupdated)) {
             $data->timeposted = time();
         } else {
@@ -121,19 +133,77 @@ FROM {sharedpanel_cards} c WHERE c.hidden = 0 AND c.sharedpanelid = :moduleinsta
         $data->content = $content;
         $data->hidden = 0;
         $data->inputsrc = $inputsrc;
-        $data->attachment_filename = '';
+//        $data->attachment_filename = '';
+        $data->attachment_filename = $attachment;
         $cards = self::gets();
         if (!$cards) {
             $data->gravity = 0;
         } else {
             $card = end($cards);
+
             $data->gravity = $card->gravity + 1;
         }
+
+        switch ($inputsrc) {
+            case "moodle":
+                $event = event\card_created_moodle::create([
+                    'objectid' => $PAGE->cm->instance,
+                    'context' => $PAGE->context,
+                    'other' => [
+                        'source' => "moodle",
+                        'username' => $sender,
+                        'moodleuserid' => $userid,
+                        'content' => strip_tags($content)
+                    ]
+                ]);
+                break;
+            case "facebook":
+                $event = event\card_created_facebook::create([
+                    'objectid' => $PAGE->cm->instance,
+                    'context' => $PAGE->context,
+                    'other' => [
+                        'source' => "facebook",
+                        'username' => $sender,
+                        'moodleuserid' => $userid,
+                        'content' => strip_tags($content)
+                    ]
+                ]);
+                break;
+            case "twitter":
+                $event = event\card_created_twitter::create([
+                    'objectid' => $PAGE->cm->instance,
+                    'context' => $PAGE->context,
+                    'other' => [
+                        'source' => "twitter",
+                        'username' => $sender,
+                        'moodleuserid' => $userid,
+                        'content' => strip_tags($content)
+                    ]
+                ]);
+                break;
+            default:
+                $event = event\card_created_moodle::create([
+                    'objectid' => $PAGE->cm->instance,
+                    'context' => $PAGE->context,
+                    'other' => [
+                        'username' => $sender,
+                        'content' => strip_tags($content)
+                    ]
+                ]);
+                break;
+        }
+
+        $event->add_record_snapshot('course', $PAGE->course);
+        $event->add_record_snapshot($PAGE->cm->modname, $instance);
+        $event->trigger();
+
 
         return $DB->insert_record('sharedpanel_cards', $data);
     }
 
-    public function add_attachment($context, $cardid, $content, $filename) {
+    public
+    function add_attachment($context, $cardid, $content, $filename)
+    {
         global $DB;
 
         $fs = get_file_storage();
@@ -154,7 +224,9 @@ FROM {sharedpanel_cards} c WHERE c.hidden = 0 AND c.sharedpanelid = :moduleinsta
         return $DB->update_record('sharedpanel_cards', $card);
     }
 
-    public function add_attachment_by_pathname($context, $cardid, $filepath, $filename) {
+    public
+    function add_attachment_by_pathname($context, $cardid, $filepath, $filename)
+    {
         global $DB;
 
         $fs = get_file_storage();
@@ -175,7 +247,9 @@ FROM {sharedpanel_cards} c WHERE c.hidden = 0 AND c.sharedpanelid = :moduleinsta
         return $DB->update_record('sharedpanel_cards', $card);
     }
 
-    public function update($cardid, $content) {
+    public
+    function update($cardid, $content)
+    {
         global $DB;
 
         $data = new \stdClass();
@@ -185,7 +259,9 @@ FROM {sharedpanel_cards} c WHERE c.hidden = 0 AND c.sharedpanelid = :moduleinsta
         return $DB->update_record('sharedpanel_cards', $data);
     }
 
-    public function delete($cardid) {
+    public
+    function delete($cardid)
+    {
         global $DB;
 
         $card = self::get($cardid);
@@ -194,7 +270,9 @@ FROM {sharedpanel_cards} c WHERE c.hidden = 0 AND c.sharedpanelid = :moduleinsta
         return $DB->update_record('sharedpanel_cards', $card);
     }
 
-    public function switch_hide_card($cardid) {
+    public
+    function switch_hide_card($cardid)
+    {
         global $DB;
 
         $card = $DB->get_record('sharedpanel_cards', ['id' => $cardid]);

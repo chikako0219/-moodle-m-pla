@@ -97,11 +97,17 @@ class email extends card
         }
 
         $mbox = imap_open($mailbox, $this->emailaddr, $this->emailpassword, OP_READONLY);
+
         if (!$mbox) {
             $this->error->message = imap_last_error();
             return false;
         }
-        $messageids = imap_search($mbox, "SUBJECT " . $this->moduleinstance->emailkey1, SE_UID);
+//        $messageids = imap_search($mbox, "SUBJECT " . $this->moduleinstance->emailkey1, SE_UID);
+	   $messageids = imap_search($mbox,'ALL',SE_UID);
+	
+	//$dump = print_r($messageids, TRUE);
+        //echo $dump;
+
         if (!$messageids) {
             return null;
         }
@@ -113,18 +119,84 @@ class email extends card
 
             $num++;
             $head = imap_headerinfo($mbox, $num);
-            $body = imap_fetchbody($mbox, $num, 1, FT_INTERNAL);
+	    $body = imap_fetchbody($mbox, $num, 1, FT_INTERNAL);
             $body = trim($body);
+	    //var_dump($body);
+	    $structure = imap_fetchstructure($mbox, $num);
+            //var_dump($structure);
+            $subject = mb_convert_encoding(imap_base64($body), 'utf-8', 'auto');
+            $title = trim($head->subject);
+	    var_dump($title);		
 
+//attachment処理
+$attachments = array();
+if(isset($structure->parts) && count($structure->parts)) {
+
+	for($i = 0; $i < count($structure->parts); $i++) {
+
+		$attachments[$i] = array(
+			'is_attachment' => false,
+			'filename' => '',
+			'name' => '',
+			'attachment' => ''
+		);
+		
+		if($structure->parts[$i]->ifdparameters) {
+			foreach($structure->parts[$i]->dparameters as $object) {
+				//var_dump($object);
+				
+				if(strtolower($object->attribute) == 'filename') {
+					$attachments[$i]['is_attachment'] = true;
+					$attachments[$i]['filename'] = $object->value;
+				}
+			}
+		}
+		
+		if($structure->parts[$i]->ifparameters) {
+			foreach($structure->parts[$i]->parameters as $object) {
+				if(strtolower($object->attribute) == 'name') {
+					$attachments[$i]['is_attachment'] = true;
+					$attachments[$i]['name'] = $object->value;
+				}
+			}
+		}	
+		
+		if($attachments[$i]['is_attachment']) {
+			$attachments[$i]['attachment'] = imap_fetchbody($mbox, $num, $i+1);
+			if($structure->parts[$i]->encoding == 3) { // 3 = BASE64
+				//$attachments[$i]['attachment'] = base64_decode($attachments[$i]['attachment']);
+				 $attachments = "<img src='data:image/jpg;base64,".$attachments[$i]['attachment']."' width=200 height=200><br>";
+				//var_dump($attachments);
+			}
+			elseif($structure->parts[$i]->encoding == 4) { // 4 = QUOTED-PRINTABLE
+				$attachments[$i]['attachment'] = quoted_printable_decode($attachments[$i]['attachment']);
+			}
+		}
+	}
+}
+
+//var_dump($title);
+
+            
+            // If sender is Evernote
             if (strpos($head->from[0]->host, "evernote.com") !== false) {
-                continue;
+	      $encodedData = str_replace(' ','+',$body);
+	      $body = base64_decode($encodedData);
+	      var_dump($body);	      
+              $cardid = $this->cardobj->add($body, $head->fromaddress, 'evernote', $messageid, strtotime($head->date), $attachments);
+	      continue;
             }
 
-            $subject = mb_convert_encoding(imap_base64($body), 'utf-8', 'auto');
+           
+	    // If sender is email
+            if (strpos($head->from[0]->host, "evernote.com") !== true && strpos($title, "morimori") !== false) {
+              $cardid = $this->cardobj->add($body, $head->fromaddress, 'email', $messageid, strtotime($head->date), $attachments);
+	      continue;
+            }
 
-            $cardid = $this->cardobj->add($subject, $head->fromaddress, 'email', $messageid);
+
             $cardids[] = $cardid;
-            foreach (mod_sharedpanel_get_tags($subject) as $tagstr) {
+            foreach (mod_sharedpanel_get_tags($body) as $tagstr) {
                 $tagobj = new tag($this->moduleinstance);
                 $tagobj->set($cardid, $tagstr, $USER->id);
             }

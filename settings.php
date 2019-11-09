@@ -31,6 +31,7 @@ if ($ADMIN->fulltree) {
 
     require 'setting/setting_facebook.php';
     require 'setting/setting_twitter.php';
+    require 'setting/setting_pinterest.php';
     
     //$settings->add(new admin_setting_heading('sharedpanel/facebook',
     //    get_string('facebook', 'sharedpanel'), get_string('facebook', 'sharedpanel')));
@@ -59,4 +60,12 @@ if ($ADMIN->fulltree) {
     //$settings->add(new admin_setting_configtext('sharedpanel/TWaccessTokenSecret',
     //    get_string('TWaccessTokenSecret', 'sharedpanel'),
     //    get_string('TWaccessTokenSecret_help', 'sharedpanel'), ''));
+
+
+    //$settings->add(new admin_setting_configtext('sharedpanel/pinterest',
+    //    get_string('pinterest', 'sharedpanel'),get_string('pinterest', 'sharedpanel')));
+
+    //settings->add(new admin_setting_configtext('sharedpanel/pinterestacessToken',
+    //    get_string('pinterestaccessToken', 'sharedpanel'),
+    //    get_string('pinterestaccessToken_help', 'sharedpanel'), ''));
 }

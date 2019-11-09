@@ -25,6 +25,10 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['event_create_twitter'] = 'Twitterで追加';
+$string['event_create_facebook'] = 'Facebookで追加';
+$string['event_create_moodle'] = 'Moodleで追加';
+
 $string['sharedpanel:addinstance'] = 'Shared Panelを追加する';
 $string['modulename'] = 'SharedPanel';
 $string['modulenameplural'] = 'SharedPanels';

@@ -20,7 +20,7 @@ defined('MOODLE_INTERNAL') || die();
 
 use core\notification;
 
-class html_writer extends \html_writer
+class html_writer2 extends \html_writer
 {
     /**
      * Return message box
@@ -84,7 +84,7 @@ class html_writer extends \html_writer
 
         $likeobj = new like($instance);
 
-        $html = \html_writer::start_div('card span3 col-md-3', ['id' => 'card' . $card->id]);
+        $html = \html_writer::start_div('card span10 col-md-3', ['id' => 'card' . $card->id]);
 
         $tags = card::get_tags($card->id);
         $html .= self::start_div('card-header card-header' . $class);

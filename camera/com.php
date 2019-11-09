@@ -38,12 +38,22 @@ $cmid = required_param('id', PARAM_INT);
 $instanceid = required_param('n', PARAM_INT);
 $content = optional_param('cameracomment', null, PARAM_TEXT);
 $name = optional_param('name', 'guest', PARAM_TEXT);
+//$capture = optional_param('capture', null, PARAM_TEXT);
+//var_dump($capture);
+
+$capture = "";
+if (is_uploaded_file($_FILES["capture"]["tmp_name"])){
+
+    $capture .= "<img src='data:image/gif;base64,";
+    $capture .= rotatecompress_img($_FILES["capture"]["tmp_name"], 600 );
+    $capture .= "' width=85%>";
+}
 
 if (!is_null($content)) {
     $instance = $DB->get_record('sharedpanel', ['id' => $instanceid]);
 
     $cardobj = new card($instance);
-    $cardid = $cardobj->add($content, $name, 'camera');
+    $cardid = $cardobj->add($content, $name, $capture,'camera', '0', '0');
 
     if (array_key_exists('capture', $_FILES)) {
         $cardobj->add_attachment_by_pathname($content, $cardid, $_FILES['tmp_name'], $_FILES['name']);
@@ -51,6 +61,16 @@ if (!is_null($content)) {
 
     echo html_writer::div(get_string('msg_post_success', 'mod_sharedpanel'));
 }
+
+/*
+//写真アップロード
+
+echo '<form action="cameraupload.php" method="post" enctype="multipart/form-data">';
+echo '<label for="capture">';
+echo '＋写真を撮る';
+echo '<input type="file" id="capture" name="capture" accept="image/*" capture="camera" style="display:none;" />';
+echo '</form>';
+*/
 
 echo html_writer::start_tag('html');
 
@@ -61,7 +81,17 @@ echo html_writer::tag('title', get_string('post_message', 'mod_sharedpanel'));
 echo html_writer::end_tag('head');
 
 echo html_writer::start_tag('body');
+
 echo html_writer::start_tag('form', ['action' => 'com.php', 'method' => 'post', 'enctype' => 'multipart/form-data']);
+
+
+echo html_writer::start_div();
+echo html_writer::tag('label', "upload", ['for' => 'capture']);
+echo html_writer::start_div();
+echo html_writer::empty_tag('input', ['type' => 'file', 'name' => 'capture', 'style' => 'accept=image/*; capture=camera; style="display:none;']);
+echo html_writer::end_div();
+echo html_writer::end_div();
+
 
 echo html_writer::start_div();
 echo html_writer::tag('label', get_string('message', 'mod_sharedpanel'), ['for' => 'cameracomment']);
@@ -87,3 +117,22 @@ echo html_writer::end_tag('form');
 
 echo html_writer::end_tag('body');
 echo html_writer::end_tag('html');
+
+function rotatecompress_img($imgname, $width){
+  $imagea= imagecreatefromjpeg($imgname);
+
+  // http://blog.diginnovation.com/archives/1104/
+  $exif_data = exif_read_data($imgname);
+  if(isset($exif_data['Orientation']) && $exif_data['Orientation'] == 6){
+    $imagea = imagerotate($imagea, 270, 0);
+  }
+
+  $imagea= imagescale($imagea, $width, -1);  // proportionally compress image with $width
+  $jpegfile= tempnam("/tmp", "email-jpg-");
+  imagejpeg($imagea,$jpegfile);
+  imagedestroy($imagea);
+  $attached= base64_encode(file_get_contents($jpegfile));
+  unlink($jpegfile);
+  return $attached;
+}
+

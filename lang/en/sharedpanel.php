@@ -25,6 +25,10 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['event_create_twitter'] = 'Add with Twitter';
+$string['event_create_facebook'] = 'Add with Facebook';
+$string['event_create_moodle'] = 'Add with Moodle';
+
 $string['sharedpanel:addinstance'] = 'Add Shared Panel';
 
 $string['modulename'] = 'SharedPanel';
@@ -141,3 +145,12 @@ $string['form_line_warning_https'] = 'LINE import works on SSL only.';
 $string['post_cancel'] = 'Canceled.';
 $string['post_saved'] = 'Saved.';
 $string['save'] = 'Save';
+
+
+$string['pinterest'] = 'pinterest';
+$string['pinterestAccesstoken'] = 'pinterest Access Token';
+$string['pinterestAccesstoken_help'] = 'pinterest Access Token';
+
+$string['pinterest'] = 'pinterest';
+$string['newservice_config1'] = 'pinterest boardsName';
+$string['newservice_config2'] = 'pinterest Access Token';

@@ -24,13 +24,13 @@ namespace mod_sharedpanel;
 
 use mod_sharedpanel\form\post_form;
 
+global $CFG, $DB, $PAGE, $OUTPUT, $USER;
+
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once(dirname(__FILE__) . '/lib.php');
 
 require_once("$CFG->libdir/formslib.php");
 require_once("locallib.php");
-
-global $CFG, $DB, $PAGE, $OUTPUT, $USER;
 
 confirm_sesskey();
 
@@ -61,7 +61,7 @@ if ($mform->is_cancelled()) {
 
     $tag = $data->tag;
 
-    $cardid = $cardobj->add($data->content["text"], fullname($USER->id), 'moodle');
+    $cardid = $cardobj->add($data->content["text"], fullname($USER), '', 'moodle', "", "");
 
     // If attach file...
     if ($filecontent = $mform->get_file_content('attachment')) {

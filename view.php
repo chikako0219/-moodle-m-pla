@@ -94,6 +94,12 @@ echo html_writer::end_div();
 echo html_writer::start_div('btn-group');
 echo html_writer::link(new moodle_url('line.php', ['id' => $id, 'n' => $sharedpanel->id]),
     get_string('postmessage_from_line', 'sharedpanel'), ['class' => 'btn btn-primary']);
+
+/*
+echo html_writer::link(new moodle_url('pinterest.php', ['id' => $id, 'n' => $sharedpanel->id]),
+    get_string('postmessage_from_line', 'sharedpanel'), ['class' => 'btn btn-primary']);
+*/
+
 echo html_writer::end_div();
 echo html_writer::start_div('btn-group');
 echo html_writer::empty_tag('input',
@@ -137,17 +143,30 @@ if ($sortby) {
 echo html_writer::start_div('', ['id' => '', 'class' => 'container']);
 echo html_writer::start_div('', ['id' => 'diagramContainer', 'class' => 'row']);
 
-/*
-if ($_POST[$modinstance->radio]==0){
-require('displaystyle/viewstyle1.php');
-}
-else if ($_POST[$modinstance->radio]==1){
-require('displaystyle/viewstyle2.php');
-}
-*/
+//var_dump($sharedpanel->display_style);
 
-foreach ($cards as $card) {
-    echo \mod_sharedpanel\html_writer::card($sharedpanel, $context, $card);
+//$url = "https://api.pinterest.com/v1/boards/chikako0219/sp20191213/pins/?access_token=Am8Pd-4IXB95Ix2iZl5NiDm6u2FHFXAT5rqiOdhFdl3MluBm-QtUQDAAAeHqRXbl5IIgexIAAAAA&fields=id%2Clink%2Cnote%2Curl%2Cimage";
+//$json = file_get_contents($url);
+//$json = mb_convert_encoding($json, 'UTF8', 'ASCII,JIS,UTF-8,EUC-JP,SJIS-WIN');
+//$arr = json_decode($json,true);
+//echo $arr['data'];
+
+// Chnage style by display_style
+
+if ($sharedpanel->display_style == 0) {
+  foreach ($cards as $card) {
+	echo \mod_sharedpanel\html_writer::card($sharedpanel, $context, $card);
+  }
+}else if ($sharedpanel->display_style == 1) {
+  foreach ($cards as $card) {
+	echo \mod_sharedpanel\html_writer2::card($sharedpanel, $context, $card);
+  }
+}else if ($sharedpanel->display_style == 2) {
+  foreach ($cards as $card) {
+        echo html_writer::start_tag('table',array('class' => 'sharedpanel_table1'));
+	echo \mod_sharedpanel\html_writer3::card($sharedpanel, $context, $card);
+        echo html_writer::end_tag('table');
+  }
 }
 
 echo html_writer::end_div();

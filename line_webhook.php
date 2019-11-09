@@ -66,7 +66,7 @@ foreach ($events as $event) {
                 $bot->replyMessage($event->getReplyToken(), $textmessagebuilder);
             }
         } else {
-            $cardobj->add($event->getText(), $event->getUserId(), 'line', $event->getReplyToken());
+            $cardobj->add($event->getText(), $event->getUserId(), '', 'line', $event->getReplyToken());
             $textmessagebuilder = new LINEBot\MessageBuilder\TextMessageBuilder(
                 get_string('line_post_message', 'mod_sharedpanel')
             );
@@ -90,7 +90,7 @@ foreach ($events as $event) {
                 $context->id, 'mod_sharedpanel', 'attachment', $event->getMessageId(), '/', 'attacnhemt.jpg');
             $html = html_writer::empty_tag('img', ['src' => $url->out(false), 'width' => '250px']);
 
-            $cardobj->add($html, $event->getUserId(), 'line', $event->getReplyToken());
+            $cardobj->add($html, $event->getUserId(), '', 'line', $event->getReplyToken());
 
             $textmessagebuilder = new LINEBot\MessageBuilder\TextMessageBuilder('画像を投稿しました。');
             $bot->replyMessage($event->getReplyToken(), $textmessagebuilder);
