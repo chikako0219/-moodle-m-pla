@@ -97,6 +97,9 @@ class email extends card
         }
 
         $mbox = imap_open($mailbox, $this->emailaddr, $this->emailpassword, OP_READONLY);
+//        $mbox = imap_open($mailbox, "sharedpanel55@gmail.com", "sakura22", OP_READONLY);
+
+
 
         if (!$mbox) {
             $this->error->message = imap_last_error();
@@ -174,23 +177,56 @@ if(isset($structure->parts) && count($structure->parts)) {
 		}
 	}
 }
-
-//var_dump($title);
-
             
             // If sender is Evernote
             if (strpos($head->from[0]->host, "evernote.com") !== false) {
 	      $encodedData = str_replace(' ','+',$body);
 	      $body = base64_decode($encodedData);
-	      var_dump($body);	      
-              $cardid = $this->cardobj->add($body, $head->fromaddress, 'evernote', $messageid, strtotime($head->date), $attachments);
+
+              $user_info_field_id = $DB->get_record('user_info_field', ['shortname' => 'sharedpanelevernote'])->id;
+              $user_info_field_data = $DB->get_records_sql('
+
+                    SELECT *
+                      FROM {user_info_data}
+                     WHERE fieldid = ?
+                      AND ' . $DB->sql_compare_text('data', 255) . ' = ' . $DB->sql_compare_text('?', 255),
+              array($user_info_field_id, $head->from[0]->personal));
+
+
+              foreach ($user_info_field_data as $key => $val){
+                $fielduserid = print_r($user_info_field_data[$key]->userid, TRUE);
+                //file_put_contents("/var/www/moodledata/nyanko5.txt", $neko, FILE_APPEND);
+                $user_info_field_data = $fielduserid;
+              }
+
+              $cardid = $this->cardobj->add($body, $head->fromaddress, $attachment, 'evernote', $messageid, strtotime($head->date),$user_info_field_data);
+
 	      continue;
             }
 
            
 	    // If sender is email
             if (strpos($head->from[0]->host, "evernote.com") !== true && strpos($title, "morimori") !== false) {
-              $cardid = $this->cardobj->add($body, $head->fromaddress, 'email', $messageid, strtotime($head->date), $attachments);
+
+              $user_info_field_id = $DB->get_record('user_info_field', ['shortname' => 'sharedpanelemail'])->id;
+              $user_info_field_data = $DB->get_records_sql('
+                    SELECT *
+                      FROM {user_info_data}
+                     WHERE fieldid = ?
+                      AND ' . $DB->sql_compare_text('data', 255) . ' = ' . $DB->sql_compare_text('?', 255),
+              array($user_info_field_id, $head->from[0]->personal));
+
+              foreach ($user_info_field_data as $key => $val){
+                $fielduserid = print_r($user_info_field_data[$key]->userid, TRUE);
+                //file_put_contents("/var/www/moodledata/nyanko5.txt", $neko, FILE_APPEND);
+                $user_info_field_data = $fielduserid;
+              }
+
+
+              //$user_info_field_data = $user_info_field_data[3]->userid;
+
+              $cardid = $this->cardobj->add($body, $head->fromaddress, $attachment, 'email', $messageid, strtotime($head->date),$user_info_field_data);
+
 	      continue;
             }
 

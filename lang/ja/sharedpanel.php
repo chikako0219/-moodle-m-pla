@@ -25,7 +25,10 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['event_create_twitter'] = 'Twitterで追加';
+$string['event_create_twitter'] = 'Twitterで投稿';
+$string['event_create_email'] = 'Emailを送信';
+$string['event_create_evernote'] = 'Evernoteを共有';
+$string['event_create_line'] = 'lineで送信';
 $string['event_create_facebook'] = 'Facebookで追加';
 $string['event_create_moodle'] = 'Moodleで追加';
 

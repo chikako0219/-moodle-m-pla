@@ -62,16 +62,43 @@ foreach ($events as $event) {
                 $bot->replyMessage($event->getReplyToken(), $textmessagebuilder);
             } else {
                 $textmessagebuilder = new LINEBot\MessageBuilder\TextMessageBuilder(
-                    get_string('line_added_user', 'mod_sharedpanel', $username));
+                   get_string('line_added_user', 'mod_sharedpanel', $username));
                 $bot->replyMessage($event->getReplyToken(), $textmessagebuilder);
             }
         } else {
-            $cardobj->add($event->getText(), $event->getUserId(), '', 'line', $event->getReplyToken());
+
+            $user_info_field_id = $DB->get_record('user_info_field', ['shortname' => 'sharedpanelline'])->id;
+            $user_info_field_data = $DB->get_records_sql('
+                    SELECT *
+                      FROM {user_info_data}
+                     WHERE fieldid = ?
+                       AND ' . $DB->sql_compare_text('data', 255) . ' = ' . $DB->sql_compare_text('?', 255),
+              array($user_info_field_id, $event->getUserId()));
+
+              foreach ($user_info_field_data as $key => $val){
+                $fielduserid = print_r($user_info_field_data[$key]->userid, TRUE);
+                //file_put_contents("/var/www/moodledata/nyanko5.txt", $neko, FILE_APPEND);
+                $user_info_field_data = $fielduserid;
+              }
+
+		//$user_info_field_data = $user_info_field_data[5]->userid;
+
+            $attachment = "<img src='data:image/jpg;base64," . base64_encode($image) . "'width=200 height=200><br>";
+ 			
+	    if ($user_info_field_data) {
+              $cardobj->add($event->getText(), $event->getUserId(), $attachment, 'line', $event->getReplyToken(),date("Y/m/d H:i:s"), $user_info_field_data);
+              //error_log("dataexists");
+            } else {
+              $cardobj->add($event->getText(), $event->getUserId(), $attachment, 'line', $event->getReplyToken(),date("Y/m/d H:i:s"));
+              //error_log("datanotexists");
+            }
+            
             $textmessagebuilder = new LINEBot\MessageBuilder\TextMessageBuilder(
                 get_string('line_post_message', 'mod_sharedpanel')
             );
             $bot->replyMessage($event->getReplyToken(), $textmessagebuilder);
         }
+
     } else if ($event instanceof LINEBot\Event\MessageEvent\ImageMessage) {
         $fs = get_file_storage();
         $response = $bot->getMessageContent($event->getMessageId());
@@ -90,13 +117,17 @@ foreach ($events as $event) {
                 $context->id, 'mod_sharedpanel', 'attachment', $event->getMessageId(), '/', 'attacnhemt.jpg');
             $html = html_writer::empty_tag('img', ['src' => $url->out(false), 'width' => '250px']);
 
-            $cardobj->add($html, $event->getUserId(), '', 'line', $event->getReplyToken());
-
-            $textmessagebuilder = new LINEBot\MessageBuilder\TextMessageBuilder('画像を投稿しました。');
+	      $cardobj->add($html, $event->getUserId(), $attachment, 'line', $event->getReplyToken(),date("Y/m/d H:i:s"));
+              //error_log($event->getText());
+		
+	    $textmessagebuilder = new LINEBot\MessageBuilder\TextMessageBuilder('画像を投稿しました。');
             $bot->replyMessage($event->getReplyToken(), $textmessagebuilder);
+
         } else {
             $textmessagebuilder = new LINEBot\MessageBuilder\TextMessageBuilder('画像投稿に失敗しました。');
             $bot->replyMessage($event->getReplyToken(), $textmessagebuilder);
+	
+
         }
     }
 }

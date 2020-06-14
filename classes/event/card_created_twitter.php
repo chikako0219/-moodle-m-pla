@@ -45,6 +45,8 @@ class card_created_twitter extends base {
 
     public function get_description() {
         return "The user with id $this->userid created card with Twitter $this->objectid .";
+        //return "The user with id '28' created card with Twitter $this->objectid .";
+
     }
 
     protected function validate_data() {

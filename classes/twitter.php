@@ -105,18 +105,25 @@ class twitter extends card
                         $content = "<img src='data:image/jpg;base64,".base64_encode($image)."'width=200 height=200><br>";
             */
 
-            $user_info_field_id = $DB->get_record('user_info_field', ['shortname' => 'sharedpanel_twitter'])->id;
+            $user_info_field_id = $DB->get_record('user_info_field', ['shortname' => 'sharedpaneltwitter'])->id;
             $user_info_field_data = $DB->get_records_sql('
                     SELECT *
                       FROM {user_info_data}
                      WHERE fieldid = ?
                        AND ' . $DB->sql_compare_text('data', 255) . ' = ' . $DB->sql_compare_text('?', 255),
                 array($user_info_field_id, $username));
+	        
+		foreach ($user_info_field_data as $key => $val){ 
+		$fielduserid = print_r($user_info_field_data[$key]->userid, TRUE);
+                file_put_contents("/var/www/moodledata/nyanko5.txt", $neko, FILE_APPEND);
+		$user_info_field_data = $fielduserid;
+		}
 
             if ($user_info_field_data) {
-                $cardids[] = $cardobj->add($content, $user_info_field_data, $attachment, 'twitter', $tweet->id, strtotime($tweet->created_at));
+                $cardids[] = $cardobj->add($content, $username, $attachment, 'twitter', $tweet->id, strtotime($tweet->created_at),$user_info_field_data);
+		error_log("dataexists");
             } else {
-                $cardids[] = $cardobj->add($content, 0, $attachment, 'twitter', $tweet->id, strtotime($tweet->created_at));
+                $cardids[] = $cardobj->add($content, $username, $attachment, 'twitter', $tweet->id, strtotime($tweet->created_at));
             }
         }
 

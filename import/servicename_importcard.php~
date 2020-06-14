@@ -1,0 +1,29 @@
+<?php
+use core\notification;
+
+//importメソッドの呼び出し部分
+$servicenameobj = new \mod_sharedpanel\servicename($sharedpanel);
+if ($servicenameobj->is_enabled()) {
+    $cardidsservicename = $servicenameobj->import();
+    if ($cardidsservicename != false || is_null($cardidsservicename) || is_array($cardidsservicename)) {
+        //カードの件数が0であれば，0件と表示
+        if (count($cardidsservicename) == 0) {
+            //Please change tweets to posts/mail/feeds etc...
+            echo \mod_sharedpanel\html_writer::message(notification::INFO,  get_string('import_twitter_no_tweets', 'mod_sharedpanel'));
+        } else {
+        //新規カードがあれば，読み込み成功と表示
+            $str = new \stdClass();
+            $str->source = 'Servicename';
+            $str->count = count($cardidsservicename);
+            echo \mod_sharedpanel\html_writer::message(notification::SUCCESS, get_string('import_success', 'mod_sharedpanel', $str));
+        }
+    } else {
+   	 //それ以外については，エラーを表示
+        echo \mod_sharedpanel\html_writer::message(notification::ERROR, get_string('import_failed', 'mod_sharedpanel', 'Servicename'));
+        $error = $servicenameobj->get_error();
+        debugging($error->code . ":" . $error->message);
+    }
+} else {
+    //認証失敗を表示 
+   echo \mod_sharedpanel\html_writer::message(notification::INFO, get_string('import_no_authinfo', 'mod_sharedpanel', 'Servicename'));
+}
