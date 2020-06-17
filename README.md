@@ -1,32 +1,37 @@
 [![Build Status](https://travis-ci.org/yuesan/sharedpanel.svg?branch=master)](https://travis-ci.org/yuesan/sharedpanel)
 
-# Shared Panel
-
-Please note that this version of Shared Panell needs facebook graph API account
-and Twitter API account if you want to import post from Facebook and Twitter.
+# Mpla-SharedPanel
 
 In this Plugin, you can do:
 
-* Get texts and pictures posted to facebook groups (only public group is avaliable)
 * Get texts and pictures posted with hashtag (e.g. #japan) on Twitter (only public account is avaliable)
+* Get messages and pictures sent to the specific user on LINE.
 * Get Email (texts and pictures) sent to the designated Email-Address with designated subjects.
 * Get Note on Evernote sent to  the designated Email-Address with designated subjects.
 
-Input texts and pictures to Moodle directly without logging in Moodle.
+Furthermore, you can register learning activity records above to Moodle Standard Logs and xAPI Logstore.
+If you want to export learning activity records to LRS as xAPI Statement, please install following plugins.
+
+Moodle Plugin Directory: logstore xAPI
+https://moodle.org/plugins/logstore_xapi
+
+Github: Mpla-LogstorexAPI
+https://github.com/chikako0219/Mpla-LogstorexAPI
+
 
 # How to install
 ## Download Shared Panel
-You can download Shared Panel from github.
+You can download this plugin from github.
 We highly recommend to download from "Release" tag.
 
 ### Download from Release tag (Recommend)
 Download latest Shared Panel from  `Source code (zip)`. 
-https://github.com/chikako0219/sharedpanel/releases
+https://github.com/chikako0219/Mpla-SharedPanel/releases
 
 ### Download from git master branch (For developer)
 
 ``` shell
-$ git clone https://github.com/chikako0219/sharedpanel.git /path/to/moodle/mod/sharedpanel
+$ git clone https://github.com/chikako0219/Mpla-SharedPanel.git /path/to/moodle/mod/sharedpanel
 ```
 
 ### Unzip and deploy to Moodle
@@ -58,17 +63,14 @@ $ php /path/to/moodle/admin/cli/upgrade.php
 | 8 | create | modform_servicename.php | modform | provides a field for entering the access token and app ID of the commercial service on setting page for learning activities |
 | 9 | create | modform_servicename.php | modform | provides a field for entering the access token and app ID of the commercial service on setting page for learning activities |
 
-# Facebook/Twitter/Mail(IMAPS) Integrations
+# Twitter/Mail(IMAPS) Integrations
 Shared Panel allows to import cards from Facebook, Twitter and Email(IMAPS). For more information about setting, please refer below.
 
-* [Facebook](https://github.com/chikako0219/sharedpanel/wiki/Facebook)
 * [Twitter](https://github.com/chikako0219/sharedpanel/wiki/Twitter)
 * [Email](https://github.com/chikako0219/sharedpanel/wiki/Email)
 
 # Author
 Chikako Nagaoka & KITA Toshihiro
-
-*Some codes in facebook.php was contributed by Go Ohta from Open University, Japan.
 *Some codes in email.php include codes by ming (http://qiita.com/ming/items/ce7b8f394cc9b12a2b49)
 
 # License
@@ -76,32 +78,6 @@ GNU GPL v3
 
 # Libraries
 Shared Panel is using libraries below.
-
-## facebook/graph-sdk
-
-* [facebook/graph-sdk](https://github.com/facebook/php-graph-sdk)
-
-```
-Copyright 2017 Facebook, Inc.
-
-You are hereby granted a non-exclusive, worldwide, royalty-free license to
-use, copy, modify, and distribute this software in source code or binary
-form for use in connection with the web services and APIs provided by
-Facebook.
-
-As with any software that integrates with the Facebook platform, your use
-of this software is subject to the Facebook Developer Principles and
-Policies [http://developers.facebook.com/policy/]. This copyright notice
-shall be included in all copies or substantial portions of the software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
-DEALINGS IN THE SOFTWARE.
-```
 
 ## abraham/twitteroauth
 
