@@ -46,18 +46,17 @@ $ php /path/to/moodle/admin/cli/upgrade.php
 
 # How to add new commercial services
 
-| word sequence | create or add | template or file name | directory | Details |
-|:---:|:---:|:---:|:---:|:---|
+| work sequence | create or add code| template or file name | directory | Details |
+|:---:|:---:|:---|:---|:---|
 | 1 | create | modform_servicename.php | modform | provides a field for entering the access token and app ID of the commercial service on setting page for learning activities |
 | 2 | create | servicename_importcard.php | import | call the "import method" in servicename.php |
 | 3 | create | servicename.php | classes | Authenticate with the commercial service in the Import method, get information such as user name from commercial services, and pass retrieved information (username, posts, time, etc) from the commercial service to "add method" in card.php|
-| 4 | create | modform_servicename.php | modform | provides a field for entering the access token and app ID of the commercial service on setting page for learning activities |
-| 5 | create | modform_servicename.php | modform | provides a field for entering the access token and app ID of the commercial service on setting page for learning activities |
-| 6 | create | modform_servicename.php | modform | provides a field for entering the access token and app ID of the commercial service on setting page for learning activities |
+| 4 | add code | modform.php | / | By adding the code to require modform_servicename.php (work sequence 1), a field is displayed on setting page for learning activities |
+| 5 | add code | importcard.php | / | By adding the code to require servicename_importcard.php (work sequence 2), you can call servicename_importcard.php |
+| 6 | add code | card.php | classes | provides a field for entering the access token and app ID of the commercial service on setting page for learning activities |
 | 7 | create | modform_servicename.php | modform | provides a field for entering the access token and app ID of the commercial service on setting page for learning activities |
 | 8 | create | modform_servicename.php | modform | provides a field for entering the access token and app ID of the commercial service on setting page for learning activities |
 | 9 | create | modform_servicename.php | modform | provides a field for entering the access token and app ID of the commercial service on setting page for learning activities |
-| 10 | create | modform_servicename.php | modform | provides a field for entering the access token and app ID of the commercial service on setting page for learning activities |
 
 # Facebook/Twitter/Mail(IMAPS) Integrations
 Shared Panel allows to import cards from Facebook, Twitter and Email(IMAPS). For more information about setting, please refer below.
