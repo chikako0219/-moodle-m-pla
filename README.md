@@ -15,10 +15,10 @@ In this Plugin, you can do:
 Input texts and pictures to Moodle directly without logging in Moodle.
 
 # How to add new commercial services
-| 左揃え | 中央揃え | 右揃え |
-|:---|:---:|---:|
-|1 |2 |3 |
-|4 |5 |6 |
+
+| word sequence | create or add | template or file name | directory | Details | 
+| 1 | create | modform_servicename.php | - | modform | provides a field for entering the access token and app ID of the commercial service on setting page for learning activities | 
+
 
 # How to install
 ## Download Shared Panel
