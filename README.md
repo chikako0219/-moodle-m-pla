@@ -60,8 +60,6 @@ $ php /path/to/moodle/admin/cli/upgrade.php
 | 5 | add code | importcard.php | / | By adding the code to require servicename_importcard.php (work sequence 2), you can call servicename_importcard.php |
 | 6 | create | card_created_servicename.php | classes/event | Define how to show descriptions on Moodle's standard log display page |
 | 7 | add code | card.php | classes | By adding the code which calls card_created_servicename.php (work sequence 7), it is possible to register retrieved information (username, posts, time, etc) from the commercial service to the standard log and send them to xAPI logstore. |
-| 8 | create | modform_servicename.php | modform | provides a field for entering the access token and app ID of the commercial service on setting page for learning activities |
-| 9 | create | modform_servicename.php | modform | provides a field for entering the access token and app ID of the commercial service on setting page for learning activities |
 
 # Twitter/Mail(IMAPS) Integrations
 Shared Panel allows to import cards from Facebook, Twitter and Email(IMAPS). For more information about setting, please refer below.
