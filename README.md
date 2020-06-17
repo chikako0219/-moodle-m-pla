@@ -53,8 +53,8 @@ $ php /path/to/moodle/admin/cli/upgrade.php
 | 3 | create | servicename.php | classes | Authenticate with the commercial service in the Import method, get information such as user name from commercial services, and pass retrieved information (username, posts, time, etc) from the commercial service to "add method" in card.php|
 | 4 | add code | modform.php | / | By adding the code to require modform_servicename.php (work sequence 1), a field is displayed on setting page for learning activities |
 | 5 | add code | importcard.php | / | By adding the code to require servicename_importcard.php (work sequence 2), you can call servicename_importcard.php |
-| 6 | add code | card.php | classes | provides a field for entering the access token and app ID of the commercial service on setting page for learning activities |
-| 7 | create | modform_servicename.php | modform | provides a field for entering the access token and app ID of the commercial service on setting page for learning activities |
+| 6 | create | card_created_servicename.php | classes/event | Define how to show descriptions on Moodle's standard log display page |
+| 7 | add code | card.php | classes | By adding the code which calls card_created_servicename.php (work sequence 7), it is possible to register retrieved information (username, posts, time, etc) from the commercial service to the standard log and send them to xAPI logstore. |
 | 8 | create | modform_servicename.php | modform | provides a field for entering the access token and app ID of the commercial service on setting page for learning activities |
 | 9 | create | modform_servicename.php | modform | provides a field for entering the access token and app ID of the commercial service on setting page for learning activities |
 
