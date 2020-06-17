@@ -17,9 +17,9 @@ Input texts and pictures to Moodle directly without logging in Moodle.
 # How to add new commercial services
 
 | word sequence | create or add | template or file name | directory | Details |
-|:---|:---:|---:|---:|---:|
+|:---:|:---:|:---:|:---:|:---|
 | 1 | create | modform_servicename.php | modform | provides a field for entering the access token and app ID of the commercial service on setting page for learning activities |
-| word sequence | create or add | template or file name | directory | Details |
+| 2 | create | modform_servicename.php | modform | provides a field for entering the access token and app ID of the commercial service on setting page for learning activities |
 
 
 |  |  |  |  |  | 
