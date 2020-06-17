@@ -14,6 +14,12 @@ In this Plugin, you can do:
 
 Input texts and pictures to Moodle directly without logging in Moodle.
 
+# How to add new commercial services
+| 左揃え | 中央揃え | 右揃え |
+|:---|:---:|---:|
+|1 |2 |3 |
+|4 |5 |6 |
+
 # How to install
 ## Download Shared Panel
 You can download Shared Panel from github.
