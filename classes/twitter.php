@@ -29,7 +29,6 @@ class twitter extends card
     {
         $config = get_config('sharedpanel');
 
-        /*
                 if (empty($config->TWconsumerKey) ||
                     empty($config->TWconsumerSecret) ||
                     empty($config->TWaccessToken) ||
@@ -38,7 +37,7 @@ class twitter extends card
                 } else {
                     return true;
                 }
-        */
+
         return true;
     }
 
@@ -48,16 +47,11 @@ class twitter extends card
 
         $config = get_config('sharedpanel');
         $connection = new TwitterOAuth(
-            trim("kjgrOLpTVMdHew6C1yeI3SchG"),
-            trim("jKEw6nKwx8MT4aZBaGyYJhjpWw2OdZ8oOicGZ4r3KzXueDA31b"),
-            trim("1871610955-xj4zWJNJlK9sNEL1FdkpZXvDtAEDH4w4m0qF0Cv"),
-            trim("1srFcqxrst4jER6Vwf7pmmfYpKSQUbTXiKMWOkxrt76iu")
-        /*
+
                     trim($config->TWconsumerKey),
                     trim($config->TWconsumerSecret),
                     trim($config->TWaccessToken),
                     trim($config->TWaccessTokenSecret)
-        */
         );
 
         try {
@@ -88,7 +82,7 @@ class twitter extends card
 
         $cardids = [];
         foreach ($tweets->statuses as $tweet) {
-//            var_dump($tweet);
+
             $content = $tweet->text;
             $content = mod_sharedpanel_utf8mb4_encode_numericentity($content);
             $username = mod_sharedpanel_utf8mb4_encode_numericentity($tweet->user->name);
@@ -96,14 +90,6 @@ class twitter extends card
             $attachment = $tweet->entities->media[0]->media_url;
             $image = file_get_contents($attachment);
             $attachment = "<img src='data:image/jpg;base64," . base64_encode($image) . "'width=200 height=200><br>";
-
-
-            /* 以下、Pinterestでうまくいったやつ
-
-                        $image_url = $pin->image->original->url;
-                        $image = file_get_contents($image_url);
-                        $content = "<img src='data:image/jpg;base64,".base64_encode($image)."'width=200 height=200><br>";
-            */
 
             $user_info_field_id = $DB->get_record('user_info_field', ['shortname' => 'sharedpaneltwitter'])->id;
             $user_info_field_data = $DB->get_records_sql('
