@@ -124,8 +124,6 @@ class card
         $data = new \stdClass;
         $data->sharedpanelid = $this->moduleinstance->id;
 
-	//mail("t-kita@kumamoto-u.ac.jp","test1","OK?");
-
         if (empty($userid)) {
             $userid = $USER->id;
         }
@@ -159,7 +157,6 @@ class card
         $data->content = $content;
         $data->hidden = 0;
         $data->inputsrc = $inputsrc;
-//        $data->attachment_filename = '';
         $data->attachment_filename = $attachment;
         $cards = self::gets();
         if (!$cards) {
@@ -294,43 +291,13 @@ class card
 	  $nyanko1 = print_r($course, TRUE);
           $nyanko2 = print_r($this->moduleinstance, TRUE);
 
-	  //mail("t-kita@kumamoto-u.ac.jp","test1","OK?");
-          //file_put_contents("/var/www/moodledata/nyanko1.txt", $nyanko1, FILE_APPEND);
-          //file_put_contents("/var/www/moodledata/nyanko3.txt", $nyanko2, FILE_APPEND);
-
-
           } else {
-/*
-          $event->add_record_snapshot('course', $PAGE->course);
-          $event->add_record_snapshot($PAGE->cm->modname, $instance);
-*/
-	  print_r("twitter");
-	  var_dump($PAGE->course);
-          print_r("LINE");
-          var_dump($course);
-  
-          print_r("twitter");
-          var_dump($instance);
-          print_r("LINE2");
-          var_dump($this->moduleinstance);
 
           $event->trigger();
+
           }
 
-	//error_log("afterrecord");
-
-	//error_log($data->timeposted);
-        //error_log($data->sender);
-        //error_log($data->messageid);
-        //error_log($data->content);
-        //error_log($data->hidden);
-        //error_log($data->inputsrc);
-        //error_log($data->timemodified);
-        //error_log($data->attachment_filename);
-
-
         return $DB->insert_record('sharedpanel_cards', $data);
-	//error_log("finish");
 
     }
 
