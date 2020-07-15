@@ -171,6 +171,22 @@ class card
         }
 
         switch ($inputsrc) {
+            /* change "servicename" to your servicename
+            case "servicename":
+                require_once(dirname(__FILE__)."/event/card_created_servicename.php"); //EVERNOTEのクラスを読み込む
+                $event = event\card_created_evernote::create([
+                    'objectid' => $PAGE->cm->instance,
+                    'context' => $PAGE->context,
+                    'userid' => $userid,
+                    'other' => [
+                        'source' => "evernote",
+                        'username' => $sender,
+                        'moodleuserid' => $userid,
+                        'content' => strip_tags($content)
+                    ]
+                ]);
+                break;
+	    */
             case "moodle":
                 $event = event\card_created_moodle::create([
                     'objectid' => $PAGE->cm->instance,
@@ -196,10 +212,6 @@ class card
                 ]);
                 break;
             case "twitter":
-
-                //$neko = print_r($PAGE->cm->instance, TRUE);
-                //file_put_contents("/var/www/moodledata/nyanko4.txt", $neko, FILE_APPEND);
-
                 $event = event\card_created_twitter::create([
                    'objectid' => $PAGE->cm->instance,
                    'context' => $PAGE->context,
@@ -237,16 +249,13 @@ class card
                     'other' => [
                         'source' => "evernote",
                         'username' => $sender,
+                        'timeposted' => $timeupdated,
                         'moodleuserid' => $userid,
                         'content' => strip_tags($content)
                     ]
                 ]);
                 break;
             case "line":
-
-                $neko = print_r($this->moduleinstance->id, TRUE);
-                file_put_contents("/var/www/moodledata/nyanko4.txt", $neko, FILE_APPEND);
-
 		require_once(dirname(__FILE__)."/event/card_created_line.php"); //LINEのクラスを読み込む
                 $event = event\card_created_line::create([
                     'objectid' => $this->moduleinstance->id,                                    			
@@ -255,12 +264,11 @@ class card
                     'other' => [
                         'source' => "line",
                         'username' => $sender,
-                        'timeposted' => $timeupdated,
+                        'timeposted' => $data->timeposted,
                         'moodleuserid' => $userid,
                         'content' => strip_tags($content)
                     ]
                 ]);
-		//error_log("lineowatayo");
                 break;
             default:
                 $event = event\card_created_moodle::create([
