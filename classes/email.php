@@ -97,20 +97,13 @@ class email extends card
         }
 
         $mbox = imap_open($mailbox, $this->emailaddr, $this->emailpassword, OP_READONLY);
-//        $mbox = imap_open($mailbox, "sharedpanel55@gmail.com", "sakura22", OP_READONLY);
-
-
 
         if (!$mbox) {
             $this->error->message = imap_last_error();
             return false;
         }
-//        $messageids = imap_search($mbox, "SUBJECT " . $this->moduleinstance->emailkey1, SE_UID);
 	   $messageids = imap_search($mbox,'ALL',SE_UID);
 	
-	//$dump = print_r($messageids, TRUE);
-        //echo $dump;
-
         if (!$messageids) {
             return null;
         }
